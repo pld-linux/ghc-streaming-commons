@@ -6,7 +6,7 @@
 Summary:	Common lower-level functions needed by various streaming data libraries
 Name:		ghc-%{pkgname}
 Version:	0.2.1.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/streaming-commons
