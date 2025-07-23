@@ -4,6 +4,7 @@
 #
 %define		pkgname	streaming-commons
 Summary:	Common lower-level functions needed by various streaming data libraries
+Summary(pl.UTF-8):	Wspólnie niskopoziomowe funkcje wymagane przez różne biblioteki obsługujące strumienie danych
 Name:		ghc-%{pkgname}
 Version:	0.2.1.2
 Release:	2
@@ -13,27 +14,49 @@ Group:		Development/Languages
 Source0:	http://hackage.haskell.org/package/%{pkgname}-%{version}/%{pkgname}-%{version}.tar.gz
 # Source0-md5:	ce7f307504236140535e61408c000e63
 URL:		http://hackage.haskell.org/package/streaming-commons
-BuildRequires:	ghc >= 6.12.3
+BuildRequires:	ghc >= 7.10.1
+BuildRequires:	ghc-array
 BuildRequires:	ghc-async
+BuildRequires:	ghc-base >= 4.8
+BuildRequires:	ghc-base < 5
+BuildRequires:	ghc-bytestring >= 0.10.2.0
 BuildRequires:	ghc-network >= 2.4.0.0
+BuildRequires:	ghc-process
 BuildRequires:	ghc-random
+BuildRequires:	ghc-stm
+BuildRequires:	ghc-text
 BuildRequires:	ghc-transformers
+BuildRequires:	ghc-unix
 BuildRequires:	ghc-zlib
 %if %{with prof}
-BuildRequires:	ghc-prof
+BuildRequires:	ghc-prof >= 7.10.1
+BuildRequires:	ghc-array-prof
 BuildRequires:	ghc-async-prof
+BuildRequires:	ghc-base-prof >= 4.8
+BuildRequires:	ghc-bytestring-prof >= 0.10.2.0
 BuildRequires:	ghc-network-prof >= 2.4.0.0
+BuildRequires:	ghc-process-prof
 BuildRequires:	ghc-random-prof
+BuildRequires:	ghc-stm-prof
+BuildRequires:	ghc-text-prof
 BuildRequires:	ghc-transformers-prof
+BuildRequires:	ghc-unix-prof
 BuildRequires:	ghc-zlib-prof
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.608
 %requires_eq	ghc
 Requires(post,postun):	/usr/bin/ghc-pkg
+Requires:	ghc-array
 Requires:	ghc-async
+Requires:	ghc-base >= 4.8
+Requires:	ghc-bytestring >= 0.10.2.0
 Requires:	ghc-network >= 2.4.0.0
+Requires:	ghc-process
 Requires:	ghc-random
+Requires:	ghc-stm
+Requires:	ghc-text
 Requires:	ghc-transformers
+Requires:	ghc-unix
 Requires:	ghc-zlib
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -47,20 +70,31 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Provides low-dependency functionality commonly needed by various
 streaming data libraries, such as conduit and pipes.
 
+%description -l pl.UTF-8
+Ta biblioteka zapewnia niskopoziomową funkcjonalność wymaganą przez
+różne biblioteki obsługujące strumienie danych, jak przewody i potoki.
+
 %package prof
 Summary:	Profiling %{pkgname} library for GHC
 Summary(pl.UTF-8):	Biblioteka profilująca %{pkgname} dla GHC
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	ghc-array-prof
 Requires:	ghc-async-prof
+Requires:	ghc-base-prof >= 4.8
+Requires:	ghc-bytestring-prof >= 0.10.2.0
 Requires:	ghc-network-prof >= 2.4.0.0
+Requires:	ghc-process-prof
 Requires:	ghc-random-prof
+Requires:	ghc-stm-prof
+Requires:	ghc-text-prof
 Requires:	ghc-transformers-prof
+Requires:	ghc-unix-prof
 Requires:	ghc-zlib-prof
 
 %description prof
-Profiling %{pkgname} library for GHC.  Should be installed when
-GHC's profiling subsystem is needed.
+Profiling %{pkgname} library for GHC. Should be installed when GHC's
+profiling subsystem is needed.
 
 %description prof -l pl.UTF-8
 Biblioteka profilująca %{pkgname} dla GHC. Powinna być zainstalowana
@@ -78,6 +112,7 @@ runhaskell Setup.hs configure -v2 \
 	--docdir=%{_docdir}/%{name}-%{version}
 
 runhaskell Setup.hs build
+
 runhaskell Setup.hs haddock --executables
 
 %install
@@ -108,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog.md README.md %{name}-%{version}-doc/*
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*.so
+%attr(755,root,root) %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*.so
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*.a
 %exclude %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/*_p.a
 
